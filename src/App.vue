@@ -62,10 +62,8 @@ export default defineComponent({
       max-width: 90vw;
     }
   }
-  .form-dialog{
-    .el-dialog{
+  .form-dialog.el-dialog{
       min-width: 750px;
-    }
   }
   .el-form-item__content {
     text-align: left;

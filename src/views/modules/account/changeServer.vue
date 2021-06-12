@@ -2,13 +2,12 @@
   <el-dialog
       @open="openForm"
       :close-on-click-modal="false"
-      class="form-dialog"
+      custom-class="form-dialog"
       :before-close="resetForm"
       title="切换服务器"
-      :visible="isShow"
       :model-value="isShow">
     <el-form :model="form" ref="editServerForm" v-loading="loading">
-      <el-form-item label="服务器：" prop="traffic" :label-width="formLabelWidth">
+      <el-form-item label="服务器：" prop="serverId" :label-width="formLabelWidth">
         <el-select style="width: 150px;" v-model="form.serverId" placeholder="请选择">
           <el-option v-for="(item,index) in serverList" :key="index" :label="item.ip" :value="item.id"></el-option>
         </el-select>

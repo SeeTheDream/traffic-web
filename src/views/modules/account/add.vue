@@ -1,11 +1,10 @@
 <template>
   <el-dialog
     title="新增"
-    class="form-dialog"
+    custom-class="form-dialog"
     :model-value="isShow"
-    :visible="isShow"
     :close-on-click-modal="false"
-    :before-close="resetForm"
+    :before-close="beforeClose"
   >
     <el-form ref="addForm" :model="form" :rules="rules" v-loading="loading">
       <el-form-item label="总流量：" :label-width="formLabelWidth">
@@ -15,13 +14,13 @@
           <el-option label="GB" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="账号类型：" :label-width="formLabelWidth">
+      <el-form-item label="账号类型：" prop="type" :label-width="formLabelWidth">
         <el-select v-model="form.type" placeholder="请选择账号类型">
           <el-option label="正式账号" value="1"></el-option>
           <el-option label="临时账号" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="服务器组：" :label-width="formLabelWidth" prop="serverGroupId">
+      <el-form-item label="服务器组：" prop="serverGroupId" :label-width="formLabelWidth">
         <el-select v-model="form.serverGroupId">
           <el-option label="请选择" value="">请选择</el-option>
           <el-option
@@ -174,7 +173,10 @@
 					}
 				})
 			}
-
+      function beforeClose(done){
+        resetForm()
+        done()
+      }
 			function resetForm() {
 				if (props.close && typeof props.close === 'function') {
 					props.close()
@@ -204,6 +206,7 @@
 				// func
 				groupLabel,
 				submitForm,
+        beforeClose,
         resetForm
 			}
 		}
