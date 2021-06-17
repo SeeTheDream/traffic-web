@@ -9,3 +9,5 @@ dist-ssr
 *.iws
 *.iml
 *.ipr
+
+yarn.lock
