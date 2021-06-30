@@ -21,7 +21,7 @@
   </el-dialog>
 </template>
 
-<script>
+<script lang="ts" setup>
 import codeApi from '@/api/pages/code'
 
 export default {
