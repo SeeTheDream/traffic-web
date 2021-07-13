@@ -59,7 +59,7 @@
 	import accountApi from '@/api/pages/account'
 	import serverApi from '@/api/pages/server'
 	import serverGroupApi from '@/api/pages/serverGroup'
-	import {defineComponent, ref, watch, defineEmit} from 'vue'
+	import {defineComponent, ref, watch} from 'vue'
 	import {ElMessageBox} from 'element-plus'
 	import {ResponseProps} from '@/utils/response-props'
 	import ElNotify from '@/components/el-notify'

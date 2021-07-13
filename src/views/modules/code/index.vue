@@ -89,7 +89,7 @@
                    :total="tableData.total"
                    style="height: 40px">
     </el-pagination>
-    <add-code :is-show="addFormShow" :close="closeAddForm"></add-code>
+    <add-code :is-show="addFormShow" :close="closeAddForm" @useCopy="dataCopy"></add-code>
     <edit-code :is-show="editFormShow" :data="editData" :close="closeEditForm"></edit-code>
   </div>
 </template>

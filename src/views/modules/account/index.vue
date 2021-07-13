@@ -174,7 +174,7 @@
                    :total="tableData.total"
                    style="height: 40px">
     </el-pagination>
-    <add-account-form :is-show="addFormShow" :close="closeAddForm"></add-account-form>
+    <add-account-form :is-show="addFormShow" :close="closeAddForm" @useCopy="dataCopy"></add-account-form>
     <edit-account-form :is-show="editFormShow" :data="editData" :close="closeEditForm"></edit-account-form>
     <edit-server-form :is-show="editServerFormShow" :data="toggleServerData" :close="closeEditServerForm"></edit-server-form>
   </div>

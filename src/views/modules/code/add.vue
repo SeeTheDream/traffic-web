@@ -31,12 +31,13 @@
   </el-dialog>
 </template>
 
-<script>
+<script lang="ts" setup>
 import codeApi from '@/api/pages/code'
+import ElNotify from '@/components/el-notify'
+import {ElMessageBox} from 'element-plus'
+import {defineProps, ref, defineEmit, useContext} from 'vue'
 
-export default {
-  name: 'AddCode',
-  props: {
+let props = defineProps({
     isShow: {
       type: Boolean,
       required: true
@@ -45,82 +46,86 @@ export default {
       type: Function,
       required: true
     }
-  },
-  data() {
-    return {
-      loading: false,
-      formLabelWidth: '150px',
-      traffic: 1024,
-      trafficUnit: '1',
-      timeUnit: '1',
-      timer: 10,
-      form: {
-        count: 10,
-        usefulHours: 10,
-        traffic: 1024
-      },
-      rules: {
-        traffic: { required: true, message: '请输入流量', trigger: 'blur' },
-        usefulHours: { required: true, message: '请选中有效时间', trigger: 'change' }
-      }
+})
+
+const emits = defineEmit(['useCopy'])
+
+const ctx = useContext()
+
+const
+    loading = ref(false),
+    formLabelWidth = ref('150px'),
+    traffic = ref(1024),
+    trafficUnit = ref('1'),
+    timeUnit = ref('1'),
+    timer = ref(10),
+    form = ref({
+      count: 10,
+      usefulHours: 10,
+      traffic: 1024
+    }),
+    rules = {
+      traffic: { required: true, message: '请输入流量', trigger: 'blur' },
+      usefulHours: { required: true, message: '请选中有效时间', trigger: 'change' }
     }
-  },
-  methods: {
-    replaceData () {
-      switch (this.trafficUnit) {
+
+const addForm = ref(null)
+
+const
+    replaceData =  function () {
+      switch (trafficUnit.value) {
         case '1':
-          this.form.traffic = this.traffic
+          form.value.traffic = traffic.value
           break
         case '2':
-          this.form.traffic = this.traffic * 1024
+          form.value.traffic = traffic.value * 1024
       }
-      switch (this.timeUnit) {
+      switch (timeUnit.value) {
         case '1':
-          this.form.usefulHours = this.timer
+          form.value.usefulHours = timer.value
           break
         case '2':
-          this.form.usefulHours = this.timer * 24
+          form.value.usefulHours = timer.value * 24
       }
     },
-    submitForm() {
-      this.$refs.addForm.validate((valid) => {
+    submitForm = function () {
+      addForm.value.validate((valid) => {
         if (valid) {
-          this.submitAdd()
+          submitAdd()
         } else {
           return false
         }
       })
     },
-    submitAdd() {
+    submitAdd = function () {
       this.loading = true
-      const vm = this
-      vm.replaceData()
+      replaceData()
       // this.loading = false
       console.log(this.form)
       // return true
       codeApi.add(this.form).then((res) => {
         if (res.code === 200) {
-          vm.$notify.success(res.message)
-          vm.$confirm('是否复制新增兑换码？').then(_ => {
-            vm.$parent.dataCopy(res.data)
+          ElNotify.success(res.message)
+          ElMessageBox.confirm('是否复制新增兑换码？').then(_ => {
+            ctx.emit('useCopy', res.data)
+            // _this.parent.appContext.dataCopy(res.data)
           }).catch(_ => {})
-          vm.resetForm()
+          resetForm()
         } else {
           this.$notify.error(res.message)
         }
-        vm.loading = false
+        loading.value = false
       }).catch(e => {
-        vm.loading = false
+        loading.value = false
       })
     },
-    resetForm () {
-      if (this.close && typeof this.close === 'function') {
-        this.close()
+    resetForm = function () {
+      if (props.close && typeof props.close === 'function') {
+        props.close()
       }
-      this.$refs.addForm.resetFields()
+      addForm.value.resetFields()
     }
-  }
-}
+
 </script>
 
 <style scoped>
