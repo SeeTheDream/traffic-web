@@ -1,6 +1,6 @@
 import codeApi from "@/api/pages/code";
 import ElNotifyApi from "@/components/el-notify";
-import {ref, getCurrentInstance} from "vue";
+import {ref} from "vue";
 import clipboard from 'vue-clipboard3'
 
 export default function (data) {
