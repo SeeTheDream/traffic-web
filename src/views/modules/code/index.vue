@@ -56,7 +56,7 @@
           label="状态"
           align="center">
         <template v-slot={row}>
-          {{ row.isUseful | typeReplace }}
+          {{ $filters.codeTypeReplace(row.isUseful) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -94,171 +94,132 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import codeApi from '@/api/pages/code.js'
-import AddCode from './add'
-import EditCode from './edit'
+import AddCode from './add.vue'
+import EditCode from './edit.vue'
 
-import tableHeight from '../../components/tableHeight.js'
+import tableHeight from '@/utils/tableHeight'
+
+import ElNotifyApi from "@/components/el-notify";
+import {ref} from 'vue'
+import codeCopy from './handler/code-copy'
+import CodeOperation from './handler/operation'
 
 export default {
   name: 'Code',
   mixins: [tableHeight],
-  components: { AddCode, EditCode },
-  filters: {
-    typeReplace(val) {
-      switch (String(val)) {
-        case '1':
-          return '未使用'
-        case '2':
-          return '已使用'
-        default:
-          return '-'
-      }
-    }
-  },
-  data() {
-    return {
-      loading: false,
-      addFormShow: false,
-      editFormShow: false,
-      editData: {},
-      tableData: {
-        list: null,
-        total: null
-      },
-      copyContent: null,
-      query: {
-        pageSize: 50,
-        pageNumber: 1,
-        code: '',
-        isUseful: ''
-      }
-    }
-  },
-  created () {
-    this.queryList()
-  },
-  methods: {
-    groupChange() {
-      this.queryList()
-    },
-    queryList() {
-      const vm = this
-      vm.loading = true
-      codeApi.getCodeList(this.query).then((res) => {
-        vm.loading = false
-        if (res.code === 200) {
-          vm.tableData.list = res.data.rows
-          vm.tableData.total = res.data.total
-        } else {
-          vm.$message({
-            message: res.message,
-            type: 'error',
-            duration: 2000
+  components: {AddCode, EditCode},
+  setup() {
+    const
+        loading = ref(false),
+        tableData = ref({
+          list: null,
+          total: null
+        }),
+        query = ref({
+          pageSize: 50,
+          pageNumber: 1,
+          code: '',
+          isUseful: ''
+        })
+
+    const codeTable = ref<HTMLDivElement | null>(null)
+
+    const {copyContent, dataCopy, newCodeCopy, batchCopy, copy} = codeCopy({codeTable})
+
+    const queryList = () => {
+          loading.value = true
+          codeApi.getCodeList(this.query).then((res) => {
+            loading.value = false
+            if (res.code === 200) {
+              tableData.value.list = res.data.rows
+              tableData.value.total = res.data.total
+            } else {
+              ElNotifyApi.default({
+                message: res.message,
+                type: 'error',
+                duration: 2000
+              })
+            }
+          }).catch((error) => {
+            ElNotifyApi.default({
+              message: error,
+              type: 'error',
+              duration: 2000
+            })
+            loading.value = false
           })
         }
-      }).catch((error) => {
-        vm.$message({
-          message: error,
-          type: 'error',
-          duration: 2000
-        })
-        vm.loading = false
-      })
-    },
-    pageSizeChange(val) {
-      this.query.pageSize = val
-      this.queryList()
-    },
-    pageNumberChange(val) {
-      this.query.pageNumber = val
-      this.queryList()
-    },
-    newCodeCopy() {
-      codeApi.newCode().then(res => {
-        this.dataCopy(res.data)
-      }).catch(res => {
-        this.$notify.error(res.message)
-      })
-    },
-    batchCopy() {
-      const targetData = this.$refs.codeTable.selection
-      this.copyContent = ''
-      if (targetData.length > 0) {
-        for (const row of targetData) {
-          // eslint-disable-next-line no-irregular-whitespace
-          this.copyContent += `兑换码: ${row.code} 流量: ${row.traffic}M 有效时间: ${row.usefulHours}小时\r\n`
+
+    const {
+      addFormShow,
+      editFormShow,
+      editData,
+
+      edit,
+      removeHandler,
+      remove,
+      batchRemove,
+      closeAddForm,
+      closeEditForm,
+    } = CodeOperation({
+      codeTable,
+      loading,
+      queryList,
+    })
+
+    const
+        pageSizeChange = (val) => {
+          query.value.pageSize = val
+          queryList()
+        },
+        pageNumberChange = (val) => {
+          query.value.pageNumber = val
+          queryList()
+        },
+        groupChange = () => {
+          queryList()
         }
-        this.copyHandler(targetData.length)
-      }
-    },
-    dataCopy(targetData) {
-      this.copyContent = ''
-      if (targetData.length > 0) {
-        for (const row of targetData) {
-          // eslint-disable-next-line no-irregular-whitespace
-          this.copyContent += `兑换码: ${row.code} 流量: ${row.traffic}M 有效时间: ${row.usefulHours}小时\r\n`
-        }
-        this.copyHandler(targetData.length)
-      }
-    },
-    copy(row) {
-      // eslint-disable-next-line no-irregular-whitespace
-      this.copyContent = `兑换码: ${row.code} 流量: ${row.traffic}M 有效时间: ${row.usefulHours}小时`
-      this.copyHandler(1)
-    },
-    copyHandler(count) {
-      const vm = this
-      vm.$copyText(this.copyContent).then(function (e) {
-        vm.$notify.success(`已复制${count}条数据。`)
-        vm.copyContent = ''
-      }, function (e) {
-        vm.copyContent = ''
-      })
-    },
-    edit(row) {
-      this.editFormShow = true
-      this.editData = row
-    },
-    remove(row) {
-      this.removeHandler([row.id])
-    },
-    batchRemove() {
-      const targetData = this.$refs.codeTable.selection
-      this.$confirm(`确认删除${targetData.length}条数据?`)
-        .then(_ => {
-          if (targetData.length > 0) {
-            this.removeHandler(targetData.map(i => i.id))
-          }
-        }).catch(_ => {})
-    },
-    removeHandler(data) {
-      const vm = this
-      vm.loading = true
-      codeApi.delete(data).then(res => {
-        vm.$notify.success(res.message)
-        vm.queryList()
-        vm.loading = false
-      }).catch(res => {
-        vm.$notify.error(res.message)
-        vm.loading = false
-      })
-    },
-    closeAddForm() {
-      this.addFormShow = false
-      this.queryList()
-    },
-    closeEditForm() {
-      this.editFormShow = false
-      this.queryList()
+
+    // 首次打开默认查询一次数据
+    queryList()
+
+    return {
+      // ref 子组件实例
+      codeTable,
+
+      loading,
+      addFormShow,
+      editFormShow,
+      editData,
+      tableData,
+      query,
+
+      queryList,
+      pageSizeChange,
+      pageNumberChange,
+      groupChange,
+
+      copyContent,
+      batchCopy,
+      newCodeCopy,
+      dataCopy,
+      copy,
+
+      edit,
+      removeHandler,
+      remove,
+      batchRemove,
+      closeAddForm,
+      closeEditForm,
     }
   }
 }
 </script>
 
 <style scoped>
-  .el-select{
-    margin-left: 10px;
-  }
+.el-select {
+  margin-left: 10px;
+}
 </style>

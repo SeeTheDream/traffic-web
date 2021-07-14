@@ -50,7 +50,7 @@ export const routeList = [
 			}, {
 				path: 'code',
 				name: 'code',
-				component: () => import('@/views/login.vue'),
+				component: () => import('@/views/modules/code/index.vue'),
 				meta: {
 					title: '兑换码',
 					visible: true

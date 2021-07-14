@@ -19,6 +19,16 @@ export function loadFilter(app) {
                 case 9:
                     return '禁用'
             }
+        },
+        codeTypeReplace(val) {
+            switch (String(val)) {
+                case '1':
+                    return '未使用'
+                case '2':
+                    return '已使用'
+                default:
+                    return '-'
+            }
         }
     }
 }

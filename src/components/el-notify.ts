@@ -12,6 +12,9 @@ function handler(opt: INotificationOptions | string, type: string) {
 }
 
 export default {
+	default: (options: INotificationOptions) => {
+		ElNotification(options)
+	},
 	success: (options: INotificationOptions | string) => {
 		handler(options, 'success')
 	},

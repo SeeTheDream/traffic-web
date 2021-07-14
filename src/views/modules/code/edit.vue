@@ -23,79 +23,78 @@
 
 <script lang="ts" setup>
 import codeApi from '@/api/pages/code'
+import ElNotifyApi from '@/components/el-notify'
+import {defineProps, ref} from 'vue'
 
-export default {
-  name: 'EditCode',
-  props: {
-    isShow: {
-      type: Boolean,
-      required: true
-    },
-    data: {
-      type: Object,
-      required: true
-    },
-    close: {
-      type: Function,
-      required: true
-    }
+const props = defineProps({
+  isShow: {
+    type: Boolean,
+    required: true
   },
-  data() {
-    return {
-      loading: false,
-      formLabelWidth: '150px',
-      form: {
-        id: null,
-        usefulHours: null,
-        traffic: null
-      },
-      rules: {
-        traffic: { required: true, message: '请输入流量', trigger: 'blur' },
-        usefulHours: { required: true, message: '请选中有效时间', trigger: 'change' }
+  data: {
+    type: Object,
+    required: true
+  },
+  close: {
+    type: Function,
+    required: true
+  }
+})
+
+const
+    loading = ref(false),
+    formLabelWidth = ref('150px'),
+    form = ref({
+      id: null,
+      usefulHours: null,
+      traffic: null
+    }),
+    rules = {
+      traffic: {required: true, message: '请输入流量', trigger: 'blur'},
+      usefulHours: {required: true, message: '请选中有效时间', trigger: 'change'}
+    },
+
+    editForm = ref(null)
+
+const
+    resetForm = () => {
+      if (props.close && typeof props.close === 'function') {
+        props.close()
       }
-    }
-  },
-  methods: {
-    submitForm() {
-      this.$refs.editForm.validate((valid) => {
+      editForm.value.resetFields()
+    },
+    submitAdd = () => {
+      loading.value = true
+      codeApi.update(form.value).then((res) => {
+        if (res.code === 200) {
+          ElNotifyApi.success(res.message)
+          // vm.$confirm('是否复制新增账号？').then(_ => {
+          //   vm.$parent.dataCopy(res.data)
+          // }).catch(_ => {})
+          resetForm()
+        } else {
+          ElNotifyApi.error(res.message)
+        }
+        loading.value = false
+      }).catch(e => {
+        loading.value = false
+      })
+    },
+    submitForm = () => {
+      editForm.value.validate((valid) => {
         if (valid) {
-          this.submitAdd()
+          submitAdd()
         } else {
           return false
         }
       })
     },
-    submitAdd() {
-      this.loading = true
-      const vm = this
-      codeApi.update(this.form).then((res) => {
-        if (res.code === 200) {
-          vm.$notify.success(res.message)
-          // vm.$confirm('是否复制新增账号？').then(_ => {
-          //   vm.$parent.dataCopy(res.data)
-          // }).catch(_ => {})
-          vm.resetForm()
-        } else {
-          vm.$notify.error(res.message)
-        }
-        vm.loading = false
-      }).catch(e => {
-        vm.loading = false
-      })
-    },
-    resetForm () {
-      if (this.close && typeof this.close === 'function') {
-        this.close()
-      }
-      this.$refs.editForm.resetFields()
-    },
-    openForm() {
-      for (const key in this.form) {
-        this.form[key] = String(this.data[key])
+    openForm = () => {
+      for (const key in form.value) {
+        form.value[key] = String(props.data[key])
       }
     }
-  }
-}
+
 </script>
 
 <style scoped>
