@@ -5,7 +5,7 @@
       class="form-dialog"
       :before-close="resetForm"
       title="新增兑换码"
-      :visible="isShow">
+      v-model:visible="isShow">
     <el-form :model="form" ref="editForm" :rules="rules" v-loading="loading">
       <el-form-item label="总流量(MB)：" prop="traffic" :label-width="formLabelWidth">
         <el-input style="width: 150px;" v-model="form.traffic"></el-input>
@@ -25,6 +25,21 @@
 import codeApi from '@/api/pages/code'
 import ElNotifyApi from '@/components/el-notify'
 import {defineProps, ref} from 'vue'
+
+const a = defineProps<{
+  isShow: {
+    type: Boolean,
+    required: true
+  },
+  data: {
+    type: Object,
+    required: true
+  },
+  close: {
+    type: Function,
+    required: true
+  }
+}>()
 
 const props = defineProps({
   isShow: {

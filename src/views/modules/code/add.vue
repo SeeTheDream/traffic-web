@@ -4,7 +4,7 @@
       :close-on-click-modal="false"
       class="form-dialog"
       :before-close="resetForm"
-      :visible="isShow">
+      v-model:visible="isShow">
     <el-form :model="form" ref="addForm" :rules="rules" v-loading="loading">
       <el-form-item label="总流量：" prop="traffic" :label-width="formLabelWidth">
         <el-input style="width: 150px;" v-model="traffic"></el-input>
@@ -35,7 +35,7 @@
 import codeApi from '@/api/pages/code'
 import ElNotify from '@/components/el-notify'
 import {ElMessageBox} from 'element-plus'
-import {defineProps, ref, defineEmit, useContext} from 'vue'
+import {defineProps, ref, defineEmit} from 'vue'
 
 let props = defineProps({
     isShow: {
@@ -48,9 +48,7 @@ let props = defineProps({
     }
 })
 
-const emits = defineEmit(['useCopy'])
-
-const ctx = useContext()
+const emit = defineEmit(['useCopy'])
 
 const
     loading = ref(false),
@@ -107,7 +105,7 @@ const
         if (res.code === 200) {
           ElNotify.success(res.message)
           ElMessageBox.confirm('是否复制新增兑换码？').then(_ => {
-            ctx.emit('useCopy', res.data)
+            emit('useCopy', res.data)
             // _this.parent.appContext.dataCopy(res.data)
           }).catch(_ => {})
           resetForm()

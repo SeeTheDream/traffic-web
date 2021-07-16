@@ -131,10 +131,12 @@
   </div>
 </template>
 
-<script>
-import logApi from '@/api/pages/systemLog.js'
+<script lang="ts" setup>
+import logApi from '@/api/pages/systemLog'
 
-import tableHeight from '../components/tableHeight.js'
+import tableHeight from '@/utils/tableHeight'
+
+import {ref,reactive} from 'vue'
 
 export default {
   name: 'systemLog',
@@ -179,65 +181,11 @@ export default {
         startTimeStr: null,
         endTimeStr: null
       },
-      pickerOptions: {
-        shortcuts: [{
-          text: '一周前',
-          onClick(picker) {
-            const start = new Date('2020-06-01')
-            const end = new Date()
-            end.setTime(end.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三天',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      }
+
     }
   },
   created () {
     this.getLogList()
-  },
-  filters: {
-    typeReplace(val) {
-      switch (String(val)) {
-        case '1':
-          return '流量同步'
-        case '2':
-          return '失效账号检测'
-        case '3':
-          return '同步session'
-        case '4':
-          return '管理员操作日志'
-        case '5':
-          return '账号查询流量记录'
-        case '6':
-          return '修改账号状态到被控端'
-        case '7':
-          return '定时同步账号'
-        case '8':
-          return '使用兑换码'
-        case '9':
-          return '系统运行日志'
-        case '10':
-          return 'SSH操作日志'
-        default:
-          return '-'
-      }
-    }
   },
   methods: {
     timeRangeChange(val) {
