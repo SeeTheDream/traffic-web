@@ -14,7 +14,7 @@ export default function () {
                     if (!this.form.startTime) {
                         callback(new Error('请选择时间范围'))
                     } else {
-                        callback()
+                        callback();
                     }
                 },
                 required: true,

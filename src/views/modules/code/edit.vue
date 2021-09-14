@@ -26,21 +26,6 @@ import codeApi from '@/api/pages/code'
 import ElNotifyApi from '@/components/el-notify'
 import {defineProps, ref} from 'vue'
 
-const a = defineProps<{
-  isShow: {
-    type: Boolean,
-    required: true
-  },
-  data: {
-    type: Object,
-    required: true
-  },
-  close: {
-    type: Function,
-    required: true
-  }
-}>()
-
 const props = defineProps({
   isShow: {
     type: Boolean,

@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import codeApi from '@/api/pages/code.js'
+import codeApi from '@/api/pages/code'
 import AddCode from './add.vue'
 import EditCode from './edit.vue'
 
