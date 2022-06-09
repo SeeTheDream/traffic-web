@@ -50,6 +50,7 @@ export default defineComponent({
     function changeOpen() {
 	    const action = store.getters.openMenu ? 'closeMenu' : 'openMenu'
 	    console.log(action)
+      store.dispatch('system/login')
 	    store.dispatch(`layout/${action}`, {}).then(() => {
 	    }).catch(() => {
 	    })

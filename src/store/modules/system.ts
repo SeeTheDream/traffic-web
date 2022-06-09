@@ -1,7 +1,6 @@
-import {Store} from 'vuex'
+import {Action, ActionTree, Module, Store} from 'vuex'
 
-
-export default {
+const module: Module<any, any> = {
     namespaced: true,
     state: () => ({
         token: '',
@@ -17,9 +16,9 @@ export default {
         }
     },
     actions: {
-// @ts-ignore
         login({commit}: Store<any>, data: any) {
             commit('loginHandler', data)
         }
     }
 }
+export default module

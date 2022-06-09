@@ -4,36 +4,35 @@
       <el-input
           v-model="query.name"
           clearable
-          size="mini"
           placeholder="账号"
           @change="reQueryList"
           style="width: 130px;"
           class="filter-item"
       />
-      <el-select size="mini" style="width: 150px" v-model="query.type" @change="reQueryList" placeholder="账号类型">
+      <el-select style="width: 150px" v-model="query.type" @change="reQueryList" placeholder="账号类型">
         <el-option label="全部类型" value=""></el-option>
         <el-option label="正式账号" value="1"></el-option>
         <el-option label="临时账号" value="2"></el-option>
       </el-select>
-      <el-select size="mini" style="width: 150px;" v-model="query.isUseful" @change="reQueryList" placeholder="请选择账号状态">
+      <el-select style="width: 150px;" v-model="query.isUseful" @change="reQueryList" placeholder="请选择账号状态">
         <el-option label="全部状态" value=""></el-option>
         <el-option label="未使用" value="1"></el-option>
         <el-option label="使用中" value="2"></el-option>
         <el-option label="已失效" value="3"></el-option>
         <el-option label="禁用" value="9"></el-option>
       </el-select>
-      <el-select size="mini" style="width: 150px;" v-model="query.serverId" @change="reQueryList" placeholder="请选择账号状态">
+      <el-select style="width: 150px;" v-model="query.serverId" @change="reQueryList" placeholder="请选择账号状态">
         <el-option label="全部服务器" value=""></el-option>
         <el-option v-for="(item,index) in serverList" :key="index" :label="item.ip" :value="item.id"></el-option>
       </el-select>
-      <el-button size="mini" type="primary" @click="queryList">查询</el-button>
-      <el-button size="mini" type="success" @click="addFormShow = true">新增</el-button>
-      <el-button size="mini" type="danger" @click="batchRemove">删除</el-button>
-      <el-button size="mini" type="primary" @click="batchCopy">复制</el-button>
+      <el-button type="primary" @click="queryList">查询</el-button>
+      <el-button type="success" @click="addFormShow = true">新增</el-button>
+      <el-button type="danger" @click="batchRemove">删除</el-button>
+      <el-button type="primary" @click="batchCopy">复制</el-button>
       <el-tooltip class="item" effect="dark" content="一键复制上一次新增的账号" placement="top">
-        <el-button size="mini" type="success" @click="newAccountCopy">一键复制最新</el-button>
+        <el-button type="success" @click="newAccountCopy">一键复制最新</el-button>
       </el-tooltip>
-      <el-button size="mini" type="primary" @click="sync">同步流量信息</el-button>
+      <el-button type="primary" @click="sync">同步流量信息</el-button>
     </div>
     <el-table
         ref="accountTable"
@@ -137,20 +136,20 @@
       <el-table-column label="操作" align="center" width="270">
         <template  v-slot:default="scope">
           <el-tooltip class="item" effect="dark" content="刷新状态" placement="top">
-            <el-button type="success" circle size="mini" icon="el-icon-refresh" @click="refreshState(scope.row)"></el-button>
+            <el-button type="success" circle icon="el-icon-refresh" @click="refreshState(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="可用/禁用" placement="top">
-            <el-button type="warning" circle size="mini" icon="el-icon-lock" @click="toggleAccountStatus(scope.$index, scope.row)"></el-button>
+            <el-button type="warning" circle icon="el-icon-lock" @click="toggleAccountStatus(scope.$index, scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="切换服务器" placement="top">
-            <el-button type="warning" circle size="mini" icon="el-icon-cpu" @click="toggleAccountServer(scope.row)"></el-button>
+            <el-button type="warning" circle icon="el-icon-cpu" @click="toggleAccountServer(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="一键复制" placement="top">
-            <el-button type="success" circle size="mini" icon="el-icon-copy-document"
+            <el-button type="success" circle icon="el-icon-copy-document"
                        @click="copy(scope.$index, scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="修改数据" placement="top">
-            <el-button type="primary" circle size="mini" icon="el-icon-edit"
+            <el-button type="primary" circle icon="el-icon-edit"
                        @click="edit(scope.$index, scope.row)"></el-button>
           </el-tooltip>
           <el-popconfirm
@@ -158,7 +157,7 @@
               @confirm="remove(scope.$index, scope.row)"
           >
             <template v-slot:reference>
-              <el-button type="danger" circle size="mini" icon="el-icon-delete"></el-button>
+              <el-button type="danger" circle icon="el-icon-delete"></el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -180,7 +179,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" name="Account">
 import accountApi from '@/api/pages/account'
 import serverApi from '@/api/pages/server'
 import tableHeight from '@/utils/tableHeight'

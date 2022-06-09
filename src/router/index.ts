@@ -1,4 +1,5 @@
-import {createRouter, createWebHistory, RouterOptions} from 'vue-router'
+import {createRouter, createWebHistory, Router, RouterOptions} from 'vue-router'
+import {Plugin} from "vue";
 
 export const routeList = [
 	{
@@ -90,7 +91,7 @@ export const routeList = [
 	}
 ]
 
-export const reCreateRouter = () => {
+export const reCreateRouter = () : Router => {
 	return createRouter(<RouterOptions>{
 		// 指定路由模式
 		history: createWebHistory(),
@@ -99,6 +100,7 @@ export const reCreateRouter = () => {
 	})
 }
 
-const router = reCreateRouter();
+// @ts-ignore
+const router: Plugin = reCreateRouter();
 
 export default router

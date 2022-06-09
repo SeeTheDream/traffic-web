@@ -9,7 +9,7 @@
         <span slot="title">首页</span>
       </el-menu-item>
       <template v-for="(item,index) in router.options.routes">
-        <el-submenu v-if="item.meta?.visible" :index="index+''">
+        <el-sub-menu v-if="item.meta?.visible" :index="index+''">
           <template #title>
             <i class="el-icon-location"></i>
             <span>{{item.meta.title}}</span>
@@ -19,7 +19,7 @@
               <el-menu-item :index="`${item.path}/${routerItem.path}`">{{routerItem.meta.title}}</el-menu-item>
             </template>
           </template>
-        </el-submenu>
+        </el-sub-menu>
       </template>
     </el-menu>
   </div>

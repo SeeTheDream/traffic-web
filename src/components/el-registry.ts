@@ -25,8 +25,6 @@ import {
     ElPopconfirm,
     locale
 } from 'element-plus'
-import 'element-plus/packages/theme-chalk/src/base.scss'
-import cn from 'element-plus/lib/locale/lang/zh-cn'
 
 const elComps = [
     ElRow,
@@ -53,7 +51,6 @@ const elComps = [
     ElTooltip,
     ElPopconfirm
 ]
-locale(cn)
 export function loadElementUi(app) {
     elComps.forEach(comp => {
         app.use(comp)

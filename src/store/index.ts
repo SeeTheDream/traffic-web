@@ -1,6 +1,7 @@
 import {createStore} from 'vuex'
 import system from './modules/system'
 import layout from './modules/layout'
+import {Plugin} from "vue";
 
 export default createStore({
     getters: {
@@ -10,9 +11,7 @@ export default createStore({
         token: (state: any) => state.system.token,
     },
     modules: {
-// @ts-ignore
         system,
-// @ts-ignore
         layout
     }
-})
+}) as Plugin

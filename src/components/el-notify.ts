@@ -1,5 +1,5 @@
 import {ElNotification} from 'element-plus'
-import {INotificationOptions} from "element-plus/packages/notification/src/notification.type";
+import {INotificationOptions} from "element-plus/es/components/notification/src/notification.vue";
 
 function handler(opt: INotificationOptions | string, type: string) {
 	let option: any = {}

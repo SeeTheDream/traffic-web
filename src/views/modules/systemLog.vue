@@ -1,7 +1,7 @@
 <template>
   <div class="systemLog">
     <div class="head-condition">
-      <el-select size="mini" v-model="query.type" @change="getLogList" placeholder="日志类型">
+      <el-select v-model="query.type" @change="getLogList" placeholder="日志类型">
         <el-option label="全部" value=""></el-option>
         <el-option label="流量同步" value="1"></el-option>
         <el-option label="失效账号检测" value="2"></el-option>
@@ -12,9 +12,8 @@
         <el-option label="系统运行日志" value="9"></el-option>
         <el-option label="SSH操作日志" value="10"></el-option>
       </el-select>
-      <el-input size="mini" style="width: 180px;" v-model="query.content" @change="getLogList" placeholder="日志内容"></el-input>
+      <el-input style="width: 180px;" v-model="query.content" @change="getLogList" placeholder="日志内容"></el-input>
       <el-date-picker
-          size="mini"
           v-model="logRange"
           type="datetimerange"
           @change="logRangeChange"
@@ -24,9 +23,9 @@
           end-placeholder="结束日期"
           align="right">
       </el-date-picker>
-      <el-button size="mini" type="primary" @click="getLogList">查询</el-button>
-      <el-button size="mini" type="danger" @click="batchRemove">批量删除</el-button>
-      <el-button size="mini" type="danger" @click="isShow = true">指定删除</el-button>
+      <el-button type="primary" @click="getLogList">查询</el-button>
+      <el-button type="danger" @click="batchRemove">批量删除</el-button>
+      <el-button type="danger" @click="isShow = true">指定删除</el-button>
     </div>
     <el-dialog
         title="按条件删除日志"
@@ -38,7 +37,6 @@
 
         <el-form-item label="账号：" prop="time" label-width="150px">
           <el-date-picker
-              size="mini"
               v-model="form.timeRange"
               type="datetimerange"
               :picker-options="pickerOptions"
@@ -103,7 +101,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="100">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="remove(scope.$index, scope.row)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="remove(scope.$index, scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,17 +128,21 @@
     </el-dialog>
   </div>
 </template>
-
-<script lang="ts" setup>
-import logApi from '@/api/pages/systemLog'
-
-import tableHeight from '@/utils/tableHeight'
-
-import {ref,reactive} from 'vue'
+<script>
+import tableHeight from "@/utils/tableHeight";
 
 export default {
   name: 'systemLog',
   mixins: [tableHeight],
+}
+</script>
+
+<script lang="ts" >
+import logApi from '@/api/pages/systemLog'
+
+import {ref,reactive} from 'vue'
+
+export default {
   data() {
     return {
       loading: false,

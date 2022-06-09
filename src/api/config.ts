@@ -4,8 +4,8 @@ import {ResponseProps} from "@/utils/response-props";
 
 if (process.env.NODE_ENV === 'development') {
     // request.defaults.baseURL = 'http://localhost:8300'
-    request.defaults.baseURL = 'http://47.115.154.30:8300'
-    // request.defaults.baseURL = 'http://tintin.oceless.xyz:8300'
+    // request.defaults.baseURL = 'http://47.115.154.30:8300'
+    request.defaults.baseURL = 'http://tintin.oceless.xyz:8300'
 } else if (process.env.NODE_ENV === 'production') {
     // request.defaults.baseURL = 'http://120.24.23.46:8300'
     // request.defaults.baseURL = 'http://tintin.oceless.xyz:8300'
@@ -13,10 +13,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // 请求拦截器
-request.interceptors.request.use(function (config) {
+request.interceptors.request.use(function (config: AxiosRequestConfig) {
     // 请求之前执行
     if (getToken()) {
-        config.headers.Authorization = getToken()
+        if(!config.headers) config.headers = {}
+        config.headers.Authorization = getToken() || ''
     }
     return config
 }, function (error) {

@@ -4,24 +4,23 @@
       <el-input
           v-model="query.code"
           clearable
-          size="mini"
           @change="queryList"
           placeholder="兑换码"
           style="width: 200px;"
           class="filter-item"
       />
-      <el-select size="mini" style="margin-left:10px" v-model="query.isUseful" @change="groupChange" placeholder="使用状态">
+      <el-select style="margin-left:10px" v-model="query.isUseful" @change="groupChange" placeholder="使用状态">
         <el-option label="全部" value=""></el-option>
         <el-option label="未使用" value="1"></el-option>
         <el-option label="已使用" value="2"></el-option>
       </el-select>
-      <el-button size="mini" type="primary" @click="queryList">查询</el-button>
-      <el-button size="mini" type="primary" @click="addFormShow = true">新增</el-button>
-      <el-button size="mini" type="success" @click="batchCopy">复制</el-button>
+      <el-button type="primary" @click="queryList">查询</el-button>
+      <el-button type="primary" @click="addFormShow = true">新增</el-button>
+      <el-button type="success" @click="batchCopy">复制</el-button>
       <el-tooltip class="item" effect="dark" content="一键复制上一次新增的兑换码" placement="top">
-        <el-button size="mini" type="success" @click="newCodeCopy">一键复制最新</el-button>
+        <el-button type="success" @click="newCodeCopy">一键复制最新</el-button>
       </el-tooltip>
-      <el-button size="mini" type="danger" @click="batchRemove">删除</el-button>
+      <el-button type="danger" @click="batchRemove">删除</el-button>
     </div>
     <el-table
         v-loading="loading"
@@ -67,14 +66,14 @@
       <el-table-column label="操作" align="center" width="150">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="一键复制" placement="top">
-            <el-button type="success" circle size="mini" icon="el-icon-copy-document"
+            <el-button type="success" circle icon="el-icon-copy-document"
                        @click="copy(scope.row)"></el-button>
           </el-tooltip>
-          <el-button type="primary" size="mini" circle icon="el-icon-edit" @click="edit(scope.row)"></el-button>
+          <el-button type="primary" circle icon="el-icon-edit" @click="edit(scope.row)"></el-button>
           <el-popconfirm
               title="确定删除吗？"
               @confirm="remove(scope.row)">
-            <el-button slot="reference" type="danger" circle size="mini" icon="el-icon-delete"></el-button>
+            <el-button slot="reference" type="danger" circle icon="el-icon-delete"></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>

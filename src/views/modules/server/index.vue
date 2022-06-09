@@ -4,12 +4,11 @@
     <el-input
         v-model="query.name"
         clearable
-        size="mini"
         placeholder="账号"
         style="width: 200px;"
         class="filter-item"
     />
-    <el-select size="mini" style="margin-left:10px" v-model="query.groupId" @change="groupChange" placeholder="账号类型">
+    <el-select style="margin-left:10px" v-model="query.groupId" @change="groupChange" placeholder="账号类型">
       <el-option label="全部" value=""></el-option>
       <template v-for="(item,index) in groupList">
         <el-option :key="index"
@@ -18,8 +17,8 @@
         </el-option>
       </template>
     </el-select>
-    <el-button size="mini" type="primary" @click="addFormShow = true">新增</el-button>
-    <el-button size="mini" type="primary" @click="queryList">查询</el-button>
+    <el-button type="primary" @click="addFormShow = true">新增</el-button>
+    <el-button type="primary" @click="queryList">查询</el-button>
   </div>
   <el-table
       v-loading="loading"
@@ -70,7 +69,7 @@
       <el-table-column label="部署" align="center" width="100">
         <template slot-scope="scope">
           <el-button
-              type="primary" size="mini"
+              type="primary"
               @click="deploy(scope.row)">部署
           </el-button>
         </template>
@@ -78,18 +77,18 @@
       <el-table-column label="同步" align="center" width="100">
         <template slot-scope="scope">
           <el-button
-              type="primary" size="mini"
+              type="primary"
               @click="sync(scope.row)">同步
           </el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="150">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" circle icon="el-icon-edit" @click="edit(scope.row)"></el-button>
+          <el-button type="primary" circle icon="el-icon-edit" @click="edit(scope.row)"></el-button>
           <el-popconfirm
               title="确定删除吗？"
               @confirm="remove(scope.row)">
-            <el-button slot="reference" type="danger" circle size="mini" icon="el-icon-delete"></el-button>
+            <el-button slot="reference" type="danger" circle icon="el-icon-delete"></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>

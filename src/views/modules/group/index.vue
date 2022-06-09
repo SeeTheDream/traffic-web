@@ -1,9 +1,9 @@
 <template>
   <div class="server-group">
     <div class="head-condition">
-      <el-button size="mini" type="primary" @click="queryList">查询</el-button>
-      <el-button size="mini" type="success" @click="addFormShow = true">新增</el-button>
-      <el-button size="mini" type="danger" @click="batchRemove">删除</el-button>
+      <el-button type="primary" @click="queryList">查询</el-button>
+      <el-button type="success" @click="addFormShow = true">新增</el-button>
+      <el-button type="danger" @click="batchRemove">删除</el-button>
     </div>
     <el-table
         ref="groupTable"
@@ -31,14 +31,14 @@
       <el-table-column label="操作" align="center" width="270">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改数据" placement="top">
-            <el-button type="primary" circle size="mini" icon="el-icon-edit"
+            <el-button type="primary" circle icon="el-icon-edit"
                        @click="edit(scope.row)"></el-button>
           </el-tooltip>
           <el-popconfirm
               title="确定删除吗？"
               @confirm="remove(scope.row)"
           >
-            <el-button slot="reference" type="danger" circle size="mini" icon="el-icon-delete"></el-button>
+            <el-button slot="reference" type="danger" circle icon="el-icon-delete"></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>

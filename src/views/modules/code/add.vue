@@ -35,7 +35,7 @@
 import codeApi from '@/api/pages/code'
 import ElNotify from '@/components/el-notify'
 import {ElMessageBox} from 'element-plus'
-import {defineProps, ref, defineEmit} from 'vue'
+import {defineProps, ref, defineEmits} from 'vue'
 
 let props = defineProps({
     isShow: {
@@ -48,7 +48,7 @@ let props = defineProps({
     }
 })
 
-const emit = defineEmit(['useCopy'])
+const emit = defineEmits(['useCopy'])
 
 const
     loading = ref(false),

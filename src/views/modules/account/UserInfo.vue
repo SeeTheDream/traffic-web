@@ -2,8 +2,8 @@
   <div id='info-container'>
     <div class="main-container">
       <div class="item">
-        <el-input v-model="q.account" size="mini" placeholder="输入账号查询"></el-input>
-        <el-button size="mini" type="success" :disabled="!openQuery" :loading="!openQuery" @click="queryAccount">查询</el-button>
+        <el-input v-model="q.account" placeholder="输入账号查询"></el-input>
+        <el-button type="success" :disabled="!openQuery" :loading="!openQuery" @click="queryAccount">查询</el-button>
       </div>
       <div class="item">
         <div class="item-label">服务器</div>
@@ -20,7 +20,7 @@
       <div class="item">
         <div class="item-label">账号状态</div>
         <div v-bind:class="usefulText">{{$filters.accountUseful(this.userInfo.isUseful)}}
-          <el-button size="mini" circle @click="refreshState" title="刷新状态" icon="el-icon-refresh"></el-button>
+          <el-button circle @click="refreshState" title="刷新状态" icon="el-icon-refresh"></el-button>
         </div>
       </div>
       <div class="item">
@@ -54,9 +54,9 @@
             <div class="item-label" style="width:100%; text-align: center">--------流量兑换--------</div>
           </div>
           <div class="item">
-            <el-input size="mini" style="width: 230px" v-model="exchangeCode" placeholder="请输入兑换码"
+            <el-input style="width: 230px" v-model="exchangeCode" placeholder="请输入兑换码"
                       autocomplete="off"></el-input>
-            <el-button size="mini" type="primary" style="margin-left:10px" :loading="loading" @click="exchange">兑换</el-button>
+            <el-button type="primary" style="margin-left:10px" :loading="loading" @click="exchange">兑换</el-button>
           </div>
       </div>
     </div>
