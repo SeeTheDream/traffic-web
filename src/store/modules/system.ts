@@ -16,6 +16,7 @@ const module: Module<any, any> = {
         }
     },
     actions: {
+// @ts-ignore
         login({commit}: Store<any>, data: any) {
             commit('loginHandler', data)
         }

@@ -2,20 +2,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router'
 import '@/router/premission'
-// import ElementPlus from "element-plus";
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
-
 import store from '@/store'
 
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
-// app.use(ElementPlus, { size: 'small', zIndex: 3000, locale: zhCn, })
-app.config.globalProperties.$ELEMENT = {
-    size: 'small',
-    locale: zhCn
-}
 
 app.mount('#app')
 

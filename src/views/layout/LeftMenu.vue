@@ -43,4 +43,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-menu {
+  height: 100%;
+  ul {
+    height: 100%;
+  }
+}
 </style>

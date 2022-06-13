@@ -1,5 +1,5 @@
 <template>
-  <div class="content-container account">
+  <el-container class="layout__container">
     <div class="head-condition">
       <el-input
           v-model="query.name"
@@ -34,155 +34,157 @@
       </el-tooltip>
       <el-button type="primary" @click="sync">同步流量信息</el-button>
     </div>
-    <el-table
-        ref="accountTable"
-        class="account-table"
-        v-loading="loading"
-        :data="tableData.accountList"
-        border
-        :height="tableHeight"
-        tooltip-effect="dark"
-        style="width: 100%;margin-top: 10px">
-      <el-table-column
-          type="selection"
-          align="center"
-          width="45">
-      </el-table-column>
-      <el-table-column
-          prop="name"
-          label="账号"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="password"
-          label="密码"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="serverIp"
-          label="ip"
-          width="150"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="port"
-          label="端口"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="total"
-          width="110"
-          label="总流量(M)"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="used"
-          width="110"
-          label="已使用(M)"
-          align="center">
-      </el-table-column>
-      <el-table-column
-          prop="total"
-          width="110"
-          label="剩余量(M)"
-          align="center">
-        <template v-slot:default={row}>
-          {{ (row.total - row.used).toFixed(2) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          prop="isUseful"
-          label="账号状态"
-          align="center">
-        <template v-slot:default={row}>
-          {{ $filters.accountUseful(row.isUseful) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          prop="type"
-          label="账号类型"
-          align="center">
-        <template v-slot:default="scope">
-          {{ $filters.accountType(scope.row.type) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          prop="usefulHours"
-          label="账号有效期"
-          width="100"
-          align="center">
-        <template v-slot:default="scope">
-          {{ scope.row.usefulHours + '小时' }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          prop="startTime"
-          label="开始日期"
-          align="center"
-          width="160">
-      </el-table-column>
-      <el-table-column
-          prop="endTime"
-          label="结束日期"
-          align="center"
-          width="160">
-      </el-table-column>
-      <el-table-column
-          prop="createTime"
-          label="创建时间"
-          align="center"
-          width="160">
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="270">
-        <template  v-slot:default="scope">
-          <el-tooltip class="item" effect="dark" content="刷新状态" placement="top">
-            <el-button type="success" circle icon="el-icon-refresh" @click="refreshState(scope.row)"></el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="可用/禁用" placement="top">
-            <el-button type="warning" circle icon="el-icon-lock" @click="toggleAccountStatus(scope.$index, scope.row)"></el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="切换服务器" placement="top">
-            <el-button type="warning" circle icon="el-icon-cpu" @click="toggleAccountServer(scope.row)"></el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="一键复制" placement="top">
-            <el-button type="success" circle icon="el-icon-copy-document"
-                       @click="copy(scope.$index, scope.row)"></el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="修改数据" placement="top">
-            <el-button type="primary" circle icon="el-icon-edit"
-                       @click="edit(scope.$index, scope.row)"></el-button>
-          </el-tooltip>
-          <el-popconfirm
-              title="确定删除吗？"
-              @confirm="remove(scope.$index, scope.row)"
-          >
-            <template v-slot:reference>
-              <el-button type="danger" circle icon="el-icon-delete"></el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination class="page"
-                   @size-change="pageSizeChange"
-                   @current-change="pageNumberChange"
-                   :current-page="query.pageNumber"
-                   :page-sizes="[50, 100, 200]"
-                   :page-size="query.pageSize"
-                   layout="->, total, sizes, prev, pager, next, jumper"
-                   :total="tableData.total"
-                   style="height: 40px">
-    </el-pagination>
-    <add-account-form :is-show="addFormShow" :close="closeAddForm" @useCopy="dataCopy"></add-account-form>
-    <edit-account-form :is-show="editFormShow" :data="editData" :close="closeEditForm"></edit-account-form>
-    <edit-server-form :is-show="editServerFormShow" :data="toggleServerData" :close="closeEditServerForm"></edit-server-form>
-  </div>
+    <el-main>
+      <el-table
+          ref="accountTable"
+          class="account-table"
+          v-loading="loading"
+          :data="tableData.accountList"
+          border
+          height="100%"
+          tooltip-effect="dark">
+        <el-table-column
+            type="selection"
+            align="center"
+            width="45">
+        </el-table-column>
+        <el-table-column
+            prop="name"
+            label="账号"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="password"
+            label="密码"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="serverIp"
+            label="ip"
+            width="150"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="port"
+            label="端口"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="total"
+            width="110"
+            label="总流量(M)"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="used"
+            width="110"
+            label="已使用(M)"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="total"
+            width="110"
+            label="剩余量(M)"
+            align="center">
+          <template v-slot:default={row}>
+            {{ (row.total - row.used).toFixed(2) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="isUseful"
+            label="账号状态"
+            align="center">
+          <template v-slot:default={row}>
+            {{ $filters.accountUseful(row.isUseful) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="type"
+            label="账号类型"
+            align="center">
+          <template v-slot:default="scope">
+            {{ $filters.accountType(scope.row.type) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="usefulHours"
+            label="账号有效期"
+            width="100"
+            align="center">
+          <template v-slot:default="scope">
+            {{ scope.row.usefulHours + '小时' }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="startTime"
+            label="开始日期"
+            align="center"
+            width="160">
+        </el-table-column>
+        <el-table-column
+            prop="endTime"
+            label="结束日期"
+            align="center"
+            width="160">
+        </el-table-column>
+        <el-table-column
+            prop="createTime"
+            label="创建时间"
+            align="center"
+            width="160">
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="320">
+          <template  v-slot:default="scope">
+            <el-tooltip class="item" effect="dark" content="刷新状态" placement="top">
+              <el-button type="success" circle :icon="Refresh" @click="refreshState(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="可用/禁用" placement="top">
+              <el-button type="warning" circle :icon="Lock" @click="toggleAccountStatus(scope.$index, scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="切换服务器" placement="top">
+              <el-button type="warning" circle :icon="Cpu" @click="toggleAccountServer(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="一键复制" placement="top">
+              <el-button type="success" circle :icon="DocumentCopy"
+                         @click="copy(scope.$index, scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="修改数据" placement="top">
+              <el-button type="primary" circle :icon="Edit"
+                         @click="edit(scope.$index, scope.row)"></el-button>
+            </el-tooltip>
+            <el-popconfirm
+                title="确定删除吗？"
+                @confirm="remove(scope.$index, scope.row)"
+            >
+              <template v-slot:reference>
+                <el-button type="danger" circle :icon="Delete"></el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-main>
+    <el-footer>
+      <el-pagination class="page"
+                     @size-change="pageSizeChange"
+                     @current-change="pageNumberChange"
+                     :current-page="query.pageNumber"
+                     :page-sizes="[50, 100, 200]"
+                     :page-size="query.pageSize"
+                     layout="->, total, sizes, prev, pager, next, jumper"
+                     :total="tableData.total"
+                     style="height: 40px">
+      </el-pagination>
+      <add-account-form :is-show="addFormShow" :close="closeAddForm" @useCopy="dataCopy"></add-account-form>
+      <edit-account-form :is-show="editFormShow" :data="editData" :close="closeEditForm"></edit-account-form>
+      <edit-server-form :is-show="editServerFormShow" :data="toggleServerData" :close="closeEditServerForm"></edit-server-form>
+    </el-footer>
+  </el-container>
 </template>
 
-<script lang="ts" name="Account">
+<script lang="ts" name="Account" setup>
 import accountApi from '@/api/pages/account'
 import serverApi from '@/api/pages/server'
-import tableHeight from '@/utils/tableHeight'
 import addAccountForm from './add.vue'
 import editAccountForm from './edit.vue'
 import editServerForm from './changeServer.vue'
@@ -190,12 +192,8 @@ import {defineComponent,ref, getCurrentInstance} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import ElNotify from '@/components/el-notify'
 import clipboard from 'vue-clipboard3'
+import {Refresh, Lock, Cpu, DocumentCopy, Edit, Delete} from '@element-plus/icons-vue'
 
-export default defineComponent({
-  name: 'Account',
-  mixins: [tableHeight],
-  components: { addAccountForm, editAccountForm, editServerForm },
-  setup() {
     const
     addFormShow = ref(false),
     editFormShow = ref(false),
@@ -419,51 +417,20 @@ export default defineComponent({
         serverList.value = res.data
       }).catch(e => {})
 
-    return {
-      addFormShow,
-      editFormShow,
-      editServerFormShow,
-      toggleServerData,
-      editData,
-      copyContent,
-      loading,
-      tableData,
-      query,
-      serverList,
-      // refs component
-      accountTable,
-      // func
-      queryList,
-      reQueryList,
-      pageSizeChange,
-      pageNumberChange,
-      toggleAccountServer,
-      toggleAccountStatus,
-      refreshState,
-      edit,
-      removeHandler,
-      remove,
-      batchRemove,
-      copyHandler,
-      dataCopy,
-      newAccountCopy,
-      batchCopy,
-      copy,
-      sync,
-      closeAddForm,
-      closeEditForm,
-      closeEditServerForm,
-    }
-  }
-})
 </script>
 <style>
   .content-container {
     /*height: calc(100vh - 30px);*/
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 </style>
-<style scoped>
+<style lang="scss" scoped>
+  .layout__container {
+    height: 100%;
+  }
   .el-select{
     margin-left: 10px;
   }

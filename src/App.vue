@@ -1,16 +1,16 @@
 <template>
   <div class="main">
-    <router-view></router-view>
+    <el-config-provider :locale="zhCn" :size="elSize">
+      <router-view></router-view>
+    </el-config-provider>
   </div>
 </template>
 <script lang="ts" setup name="App">
-import {onMounted} from 'vue'
-import login from './views/login.vue'
+import {onMounted, ref} from 'vue'
 import {useStore} from 'vuex'
-import { defineComponent } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
-let locale = zhCn
 
+const elSize = ref('default')
 
 const store = useStore()
 
@@ -20,17 +20,23 @@ const isMobile = () => {
   return window.innerWidth <= 800
 }
 
+const checkMobile = () => {
+  let current = isMobile()
+  if (current == !store.getters.isMobile) {
+    store.dispatch('layout/checkMobile', current)
+  }
+}
+
 onMounted(() => {
-  window.addEventListener('resize', (e) => {
-    let current = isMobile()
-    if (current == !store.getters.isMobile) {
-      store.dispatch('layout/checkMobile', current)
-    }
-  })
+  window.addEventListener('resize', checkMobile)
 })
+checkMobile()
 </script>
 
 <style lang="scss">
+@mixin fullHeight {
+  height: 100%;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,6 +48,15 @@ onMounted(() => {
 html, body, #app {
   margin: 0;
   padding: 0;
+  @include fullHeight;
+}
+
+#app {
+  max-width: 100vw;
+  overflow: hidden;
+}
+.main {
+  @include fullHeight;
 }
 
 body {
